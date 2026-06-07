@@ -286,7 +286,7 @@ th {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .suggestions {
@@ -338,6 +338,19 @@ th {
 }
 
 @media (max-width: 920px) {
+  body {
+    padding: 14px;
+  }
+
+  .app-shell {
+    width: 100%;
+  }
+
+  .login-panel {
+    max-width: none;
+    width: 100%;
+  }
+
   .topbar,
   .panel-title,
   .login-grid,
