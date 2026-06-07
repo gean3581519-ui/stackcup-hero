@@ -66,6 +66,8 @@ function setupSupabase() {
     $("setupPanel").classList.remove("hidden");
     $("loginPanel").classList.add("hidden");
     $("mainPanel").classList.add("hidden");
+    $("loginPanel").style.display = "none";
+    $("mainPanel").style.display = "none";
     return;
   }
 
@@ -158,6 +160,8 @@ function updateSession() {
   $("sessionText").textContent = loggedIn ? `目前登入：${coachDisplayName()}` : "尚未登入";
   $("loginPanel").classList.toggle("hidden", loggedIn);
   $("mainPanel").classList.toggle("hidden", !loggedIn);
+  $("loginPanel").style.display = loggedIn ? "none" : "";
+  $("mainPanel").style.display = loggedIn ? "" : "none";
   $("logoutBtn").classList.toggle("hidden", !loggedIn);
   $("syncBtn").classList.toggle("hidden", !loggedIn);
   if (!loggedIn) $("recordsBody").innerHTML = "";
@@ -494,24 +498,37 @@ function renderRecords() {
   const group = normalizeGroup($("groupName").value);
   const records = allRecords
     .filter((r) => Number(r.scoreYear) === year && monthNumber(r.scoreMonth) === monthNumber(month) && r.groupName === group)
-    .sort((a, b) => a.itemName.localeCompare(b.itemName) || String(a.playerNo).localeCompare(String(b.playerNo), "zh-Hant", { numeric: true }));
+    .sort((a, b) => items.indexOf(a.itemName) - items.indexOf(b.itemName)
+      || String(a.playerNo).localeCompare(String(b.playerNo), "zh-Hant", { numeric: true }));
 
   renderMonthlyStats(records, year, month, group);
-  $("recordsBody").innerHTML = records.map((record) => `
-    <tr>
-      <td>${escapeHtml(record.scoreYear)}</td>
-      <td>${escapeHtml(record.scoreMonth)}</td>
-      <td>${escapeHtml(record.groupName)}</td>
-      <td>${escapeHtml(record.itemName)}</td>
-      <td>${escapeHtml(record.playerNo)}</td>
-      <td>${escapeHtml(record.name1)}${record.name2 ? " / " + escapeHtml(record.name2) : ""}</td>
-      <td>${escapeHtml(record.scoreText)}</td>
-      <td>${escapeHtml(record.rank)}</td>
-      <td>${escapeHtml(record.points)}</td>
-      <td>${escapeHtml(record.remark)}</td>
-      <td>${escapeHtml(record.coachName)}</td>
-    </tr>
-  `).join("");
+  $("recordsBody").innerHTML = items.map((item) => {
+    const itemRows = records.filter((record) => record.itemName === item);
+    return `
+      <tr class="item-divider">
+        <td colspan="11">${escapeHtml(item)}</td>
+      </tr>
+      ${itemRows.length ? itemRows.map((record) => `
+        <tr>
+          <td>${escapeHtml(record.scoreYear)}</td>
+          <td>${escapeHtml(record.scoreMonth)}</td>
+          <td>${escapeHtml(record.groupName)}</td>
+          <td>${escapeHtml(record.itemName)}</td>
+          <td>${escapeHtml(record.playerNo)}</td>
+          <td>${escapeHtml(record.name1)}${record.name2 ? " / " + escapeHtml(record.name2) : ""}</td>
+          <td>${escapeHtml(record.scoreText)}</td>
+          <td>${escapeHtml(record.rank)}</td>
+          <td>${escapeHtml(record.points)}</td>
+          <td>${escapeHtml(record.remark)}</td>
+          <td>${escapeHtml(record.coachName)}</td>
+        </tr>
+      `).join("") : `
+        <tr>
+          <td colspan="11" class="empty">尚無資料</td>
+        </tr>
+      `}
+    `;
+  }).join("");
 }
 
 function renderMonthlyStats(records, year, month, group) {

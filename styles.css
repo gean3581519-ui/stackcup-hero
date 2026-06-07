@@ -238,6 +238,14 @@ th {
   z-index: 1;
 }
 
+.item-divider td {
+  background: var(--brand);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  text-align: left;
+}
+
 .report-panel {
   grid-column: 1 / -1;
 }
