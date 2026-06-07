@@ -100,7 +100,8 @@ label {
 
 .top-actions,
 .button-row,
-.report-filters {
+.report-filters,
+.export-filters {
   display: flex;
   gap: 8px;
   align-items: center;
@@ -251,8 +252,17 @@ th {
 }
 
 .report-filters input,
-.report-filters select {
+.report-filters select,
+.export-filters input,
+.export-filters select {
   width: 110px;
+}
+
+.export-filters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .report-output {
@@ -373,7 +383,8 @@ th {
 
   .top-actions,
   .button-row,
-  .report-filters {
+  .report-filters,
+  .export-filters {
     align-items: stretch;
   }
 
@@ -383,6 +394,8 @@ th {
 
   .report-filters input,
   .report-filters select,
+  .export-filters input,
+  .export-filters select,
   button {
     width: 100%;
   }
