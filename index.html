@@ -6,15 +6,18 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>疊杯英雄榜成績系統｜正式版</title>
-  <link rel="stylesheet" href="styles.css?v=20260607-7">
+  <title>桃園疊杯英雄榜成績系統｜正式版</title>
+  <link rel="stylesheet" href="styles.css?v=20260608-1">
 </head>
 <body>
   <main class="app-shell">
     <section class="topbar">
-      <div>
-        <h1><span class="title-cup-icon" aria-hidden="true"></span>疊杯英雄榜成績系統</h1>
-        <p id="sessionText">尚未登入</p>
+      <div class="brand-block">
+        <img class="brand-logo" src="taoyuan-stackcup-logo.png" alt="桃園疊杯中心標誌">
+        <div class="brand-text">
+          <h1>桃園疊杯英雄榜成績系統</h1>
+          <p id="sessionText">尚未登入</p>
+        </div>
       </div>
       <div class="top-actions">
         <button id="syncBtn" class="hidden" type="button">重新整理</button>
@@ -22,31 +25,13 @@
       </div>
     </section>
 
-    <section class="cup-hero-banner" aria-label="疊杯主題裝飾">
-      <div class="hero-copy">
-        <span class="hero-kicker">STACK CUP HERO</span>
-        <strong>速度、穩定、專注</strong>
-        <p>登錄成績・即時排名・月報表匯出</p>
-      </div>
-      <div class="mega-cup-stack" aria-hidden="true">
-        <div class="cup-row cup-row-1"><span class="cup cup-gold"></span></div>
-        <div class="cup-row cup-row-2"><span class="cup cup-blue"></span><span class="cup cup-orange"></span></div>
-        <div class="cup-row cup-row-3"><span class="cup cup-teal"></span><span class="cup cup-blue"></span><span class="cup cup-gold"></span></div>
-      </div>
-      <div class="hero-badges" aria-hidden="true">
-        <span>333</span>
-        <span>363</span>
-        <span>CYCLE</span>
-      </div>
-    </section>
-
     <section id="setupPanel" class="panel login-panel hidden">
-      <h2><span class="section-icon">⚙️</span>正式版尚未連線</h2>
+      <h2>正式版尚未連線</h2>
       <p class="setup-note">請先在 <strong>config.js</strong> 填入 Supabase URL 與 anon key，並在 Supabase 執行 <strong>supabase_schema.sql</strong>。</p>
     </section>
 
     <section id="loginPanel" class="panel login-panel">
-      <h2><span class="section-icon">🧢</span>教練登入</h2>
+      <h2>教練登入</h2>
       <div class="login-grid">
         <label>
           教練名稱
@@ -68,7 +53,7 @@
     <section id="mainPanel" class="main-grid hidden" style="display: none;">
       <form id="scoreForm" class="panel score-form">
         <div class="panel-title">
-          <h2><span class="section-icon cup-mini" aria-hidden="true"></span>登錄成績</h2>
+          <h2>登錄成績</h2>
           <span id="saveStatus"></span>
         </div>
         <div id="overwriteHint" class="overwrite-hint">相同年份、月份、組別、項目、選手編號會自動覆蓋原資料。</div>
@@ -135,22 +120,8 @@
 
       <section class="panel">
         <div class="panel-title">
-          <h2><span class="section-icon">⚡</span>該月即時成績</h2>
-          <div class="export-filters">
-            <select id="exportYear" aria-label="匯出年份"></select>
-            <select id="exportMonth" aria-label="匯出月份"></select>
-            <select id="exportGroup" aria-label="匯出組別">
-              <option>個人</option>
-              <option>雙人</option>
-            </select>
-            <select id="exportItem" aria-label="匯出項目">
-              <option value="全部">全部項目</option>
-              <option>333</option>
-              <option>363</option>
-              <option>Cycle</option>
-            </select>
-            <button id="exportBtn" type="button">匯出 CSV</button>
-          </div>
+          <h2>該月即時成績</h2>
+          <button id="exportBtn" type="button">匯出 CSV</button>
         </div>
         <div id="monthlyStats" class="monthly-stats"></div>
         <div class="table-wrap">
@@ -177,7 +148,7 @@
 
       <section class="panel report-panel">
         <div class="panel-title">
-          <h2><span class="section-icon">🏆</span>月排名報表</h2>
+          <h2>月排名報表</h2>
           <div class="report-filters">
             <select id="reportYear"></select>
             <select id="reportMonth"></select>
@@ -194,8 +165,8 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260607-7"></script>
-  <script src="students.js?v=20260607-7"></script>
-  <script src="app.js?v=20260607-7"></script>
+  <script src="config.js?v=20260607-4"></script>
+  <script src="students.js?v=20260607-4"></script>
+  <script src="app.js?v=20260607-4"></script>
 </body>
 </html>
