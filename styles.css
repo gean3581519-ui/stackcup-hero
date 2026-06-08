@@ -841,8 +841,9 @@ table thead th {
 
 
 
+
 /* =========================================================
-   桃園疊杯英雄榜 v8：移除右側杯子/按鈕，整頁使用中心標誌背景 20260608-8
+   桃園疊杯英雄榜 v9：右下角標誌版 20260608-9
 ========================================================= */
 .app-shell {
   position: relative;
@@ -864,22 +865,22 @@ body::before {
   z-index: 0;
   background-image: url('taoyuan-stackcup-logo.png');
   background-repeat: no-repeat;
-  background-position: center 56%;
-  background-size: min(52vw, 760px);
-  opacity: 0.08;
-  filter: saturate(0.95);
+  background-position: -7% 52%;
+  background-size: min(34vw, 430px);
+  opacity: 0.05;
+  filter: saturate(0.9);
 }
 
 .hero-header {
   position: relative;
   overflow: hidden;
   margin-bottom: 18px;
-  padding: 18px 28px 20px;
+  padding: 18px 28px 18px;
   border-radius: 30px;
   border: 1px solid rgba(255, 211, 61, 0.22);
   background:
-    radial-gradient(circle at 82% 20%, rgba(255, 211, 61, 0.16), transparent 220px),
-    linear-gradient(135deg, rgba(8,43,88,0.94) 0%, rgba(12,75,153,0.93) 50%, rgba(61,127,255,0.90) 100%);
+    radial-gradient(circle at 82% 20%, rgba(255, 211, 61, 0.14), transparent 220px),
+    linear-gradient(135deg, rgba(8,43,88,0.96) 0%, rgba(12,75,153,0.94) 50%, rgba(61,127,255,0.90) 100%);
   color: #fff;
   box-shadow: 0 18px 42px rgba(7, 78, 128, 0.20);
 }
@@ -897,12 +898,12 @@ body::before {
 .hero-header::after {
   content: "TAOYUAN SPEED STACKS";
   position: absolute;
-  right: 20px;
-  top: 18px;
-  font-size: clamp(34px, 4.8vw, 72px);
+  right: 18px;
+  top: 14px;
+  font-size: clamp(34px, 5vw, 72px);
   font-weight: 950;
   font-style: italic;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   color: rgba(255,255,255,0.07);
   white-space: nowrap;
   line-height: 1;
@@ -928,15 +929,15 @@ body::before {
   justify-content: space-between;
   align-items: flex-start;
   gap: 18px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .brand-text h1 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(28px, 3.2vw, 48px);
+  font-size: clamp(28px, 3.25vw, 52px);
   font-weight: 950;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.2px;
   line-height: 1.06;
   text-shadow: 0 4px 16px rgba(0,0,0,0.16);
 }
@@ -967,13 +968,16 @@ body::before {
 }
 
 .hero-main.solo-hero {
-  display: block;
-  min-height: 152px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  align-items: end;
+  gap: 18px;
+  min-height: 150px;
 }
 
 .hero-copy {
   max-width: 560px;
-  padding: 36px 0 14px;
+  padding: 30px 0 10px;
 }
 
 .hero-kicker {
@@ -991,25 +995,39 @@ body::before {
 
 .hero-copy strong {
   display: block;
-  font-size: 20px;
-  line-height: 1.25;
+  font-size: 19px;
+  line-height: 1.24;
   color: #ffffff;
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .hero-copy p {
   margin: 10px 0 0;
   color: rgba(255,255,255,.90);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
+}
+
+.hero-side-logo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-side-logo img {
+  width: 170px;
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 16px rgba(0,0,0,.15));
 }
 
 @media (max-width: 920px) {
   body::before {
-    background-size: min(82vw, 500px);
-    background-position: center 58%;
-    opacity: 0.07;
+    background-size: min(48vw, 320px);
+    background-position: -10% 58%;
+    opacity: 0.04;
   }
 
   .hero-header {
@@ -1032,14 +1050,24 @@ body::before {
 
   .brand-text h1 { font-size: 26px; }
   .brand-text p { font-size: 14px; }
-  .hero-main.solo-hero { min-height: 128px; }
-  .hero-copy { max-width: none; padding: 24px 0 8px; }
+  .hero-main.solo-hero {
+    grid-template-columns: 1fr 140px;
+    min-height: 126px;
+  }
+  .hero-copy { max-width: none; padding: 20px 0 8px; }
+  .hero-side-logo img { width: 124px; }
   .top-actions { justify-content: flex-end; }
 }
 
 @media (max-width: 540px) {
   .hero-header::after { display: none; }
+  .hero-main.solo-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .hero-copy { text-align: center; padding-top: 16px; }
   .hero-kicker { font-size: 11px; letter-spacing: 1.2px; }
   .hero-copy strong { font-size: 18px; }
-  .hero-copy { text-align: center; }
+  .hero-side-logo { justify-content: center; margin-top: 8px; }
+  .hero-side-logo img { width: 130px; }
 }
