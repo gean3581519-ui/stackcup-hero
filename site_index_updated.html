@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>桃園疊杯英雄榜成績系統｜正式版</title>
+  <link rel="stylesheet" href="styles.css?v=20260608-1">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="topbar">
+      <div class="brand-block">
+        <img class="brand-logo" src="taoyuan-stackcup-logo.png" alt="桃園疊杯中心標誌">
+        <div class="brand-text">
+          <h1>桃園疊杯英雄榜成績系統</h1>
+          <p id="sessionText">尚未登入</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="syncBtn" class="hidden" type="button">重新整理</button>
+        <button id="logoutBtn" class="hidden" type="button">登出</button>
+      </div>
+    </section>
+
+    <section id="setupPanel" class="panel login-panel hidden">
+      <h2>正式版尚未連線</h2>
+      <p class="setup-note">請先在 <strong>config.js</strong> 填入 Supabase URL 與 anon key，並在 Supabase 執行 <strong>supabase_schema.sql</strong>。</p>
+    </section>
+
+    <section id="loginPanel" class="panel login-panel">
+      <h2>教練登入</h2>
+      <div class="login-grid">
+        <label>
+          教練名稱
+          <input id="coachDisplayName" type="text" autocomplete="name" placeholder="例如：王教練">
+        </label>
+        <label>
+          Email
+          <input id="coachEmail" type="email" autocomplete="username" placeholder="coach@example.com">
+        </label>
+        <label>
+          密碼
+          <input id="coachPassword" type="password" autocomplete="current-password">
+        </label>
+        <button id="loginBtn" type="button">登入</button>
+      </div>
+      <p class="setup-note">正式版使用 Supabase Auth。教練帳號需先在 Supabase 建立。</p>
+    </section>
+
+    <section id="mainPanel" class="main-grid hidden" style="display: none;">
+      <form id="scoreForm" class="panel score-form">
+        <div class="panel-title">
+          <h2>登錄成績</h2>
+          <span id="saveStatus"></span>
+        </div>
+        <div id="overwriteHint" class="overwrite-hint">相同年份、月份、組別、項目、選手編號會自動覆蓋原資料。</div>
+
+        <div class="form-grid">
+          <label>
+            成績年份
+            <select id="scoreYear" required></select>
+          </label>
+          <label>
+            月份
+            <select id="scoreMonth" required></select>
+          </label>
+          <label>
+            組別
+            <select id="groupName" required>
+              <option>個人</option>
+              <option>雙人</option>
+            </select>
+          </label>
+          <label>
+            項目
+            <select id="itemName" required>
+              <option>333</option>
+              <option>363</option>
+              <option>Cycle</option>
+            </select>
+          </label>
+          <label>
+            選手編號
+            <input id="playerNo" type="text" required>
+            <div id="playerNoSuggestions" class="suggestions hidden"></div>
+          </label>
+          <label>
+            姓名1
+            <input id="name1" type="text" required>
+            <div id="name1Suggestions" class="suggestions hidden"></div>
+          </label>
+          <label id="name2Wrap">
+            姓名2
+            <input id="name2" type="text">
+          </label>
+          <label>
+            成績狀態
+            <input id="scoreValue" type="number" step="0.001" placeholder="999 代表犯規">
+          </label>
+          <label>
+            備註
+            <select id="remark">
+              <option value=""></option>
+              <option>特</option>
+              <option>假</option>
+              <option>國</option>
+              <option>退</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button type="submit">送出成績</button>
+          <button id="clearFormBtn" type="button">清空</button>
+        </div>
+      </form>
+
+      <section class="panel">
+        <div class="panel-title">
+          <h2>該月即時成績</h2>
+          <button id="exportBtn" type="button">匯出 CSV</button>
+        </div>
+        <div id="monthlyStats" class="monthly-stats"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>年度</th>
+                <th>月份</th>
+                <th>組別</th>
+                <th>項目</th>
+                <th>編號</th>
+                <th>姓名</th>
+                <th>成績</th>
+                <th>名次</th>
+                <th>積分</th>
+                <th>備註</th>
+                <th>教練</th>
+              </tr>
+            </thead>
+            <tbody id="recordsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel report-panel">
+        <div class="panel-title">
+          <h2>月排名報表</h2>
+          <div class="report-filters">
+            <select id="reportYear"></select>
+            <select id="reportMonth"></select>
+            <select id="reportGroup">
+              <option>個人</option>
+              <option>雙人</option>
+            </select>
+            <button id="reportBtn" type="button">產生月排名</button>
+          </div>
+        </div>
+        <div id="reportOutput" class="report-output"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js?v=20260607-4"></script>
+  <script src="students.js?v=20260607-4"></script>
+  <script src="app.js?v=20260607-4"></script>
+</body>
+</html>
