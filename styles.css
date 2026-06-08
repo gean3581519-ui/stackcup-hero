@@ -840,8 +840,9 @@ table thead th {
 
 
 
+
 /* =========================================================
-   桃園疊杯英雄榜 v7：縮小展示卡 + 項目切換杯型 + 中央浮水印 20260608-7
+   桃園疊杯英雄榜 v8：移除右側杯子/按鈕，整頁使用中心標誌背景 20260608-8
 ========================================================= */
 .app-shell {
   position: relative;
@@ -850,9 +851,9 @@ table thead th {
 
 body {
   background:
-    radial-gradient(circle at 4% 0%, rgba(255, 210, 74, 0.16), transparent 260px),
-    radial-gradient(circle at 96% 0%, rgba(47, 124, 255, 0.10), transparent 300px),
-    linear-gradient(180deg, #f7f9fe 0%, #f3f7fc 100%);
+    radial-gradient(circle at 6% 0%, rgba(255, 210, 74, 0.12), transparent 240px),
+    radial-gradient(circle at 94% 0%, rgba(61, 127, 255, 0.10), transparent 280px),
+    linear-gradient(180deg, #f7f9fe 0%, #f3f6fb 100%);
 }
 
 body::before {
@@ -863,24 +864,24 @@ body::before {
   z-index: 0;
   background-image: url('taoyuan-stackcup-logo.png');
   background-repeat: no-repeat;
-  background-position: center center;
-  background-size: min(28vw, 340px);
-  opacity: 0.042;
-  filter: grayscale(0.02);
+  background-position: center 56%;
+  background-size: min(52vw, 760px);
+  opacity: 0.08;
+  filter: saturate(0.95);
 }
 
 .hero-header {
   position: relative;
   overflow: hidden;
   margin-bottom: 18px;
-  padding: 18px 28px 18px;
+  padding: 18px 28px 20px;
   border-radius: 30px;
   border: 1px solid rgba(255, 211, 61, 0.22);
   background:
-    radial-gradient(circle at 82% 22%, rgba(255, 211, 61, 0.16), transparent 220px),
-    linear-gradient(135deg, #082b58 0%, #0c4b99 48%, #3d7fff 100%);
+    radial-gradient(circle at 82% 20%, rgba(255, 211, 61, 0.16), transparent 220px),
+    linear-gradient(135deg, rgba(8,43,88,0.94) 0%, rgba(12,75,153,0.93) 50%, rgba(61,127,255,0.90) 100%);
   color: #fff;
-  box-shadow: 0 18px 42px rgba(7, 78, 128, 0.22);
+  box-shadow: 0 18px 42px rgba(7, 78, 128, 0.20);
 }
 
 .hero-header::before {
@@ -896,19 +897,23 @@ body::before {
 .hero-header::after {
   content: "TAOYUAN SPEED STACKS";
   position: absolute;
-  right: 18px;
-  top: 16px;
-  font-size: clamp(32px, 4.6vw, 68px);
+  right: 20px;
+  top: 18px;
+  font-size: clamp(34px, 4.8vw, 72px);
   font-weight: 950;
   font-style: italic;
   letter-spacing: 3px;
-  color: rgba(255,255,255,0.065);
+  color: rgba(255,255,255,0.07);
   white-space: nowrap;
   line-height: 1;
 }
 
 .topbar,
-.title-cup-icon {
+.title-cup-icon,
+.hero-visual,
+.event-stack-display,
+.hero-badges,
+.hero-badge {
   display: none !important;
 }
 
@@ -923,10 +928,8 @@ body::before {
   justify-content: space-between;
   align-items: flex-start;
   gap: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-
-.brand-block { min-width: 0; }
 
 .brand-text h1 {
   margin: 0;
@@ -963,18 +966,19 @@ body::before {
   background: linear-gradient(135deg, #ffe88a, #f2ba48);
 }
 
-.hero-main {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(250px, 320px);
-  align-items: center;
-  gap: 20px;
+.hero-main.solo-hero {
+  display: block;
+  min-height: 152px;
 }
 
-.hero-copy { max-width: 560px; }
+.hero-copy {
+  max-width: 560px;
+  padding: 36px 0 14px;
+}
 
 .hero-kicker {
   display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   padding: 7px 14px;
   border-radius: 999px;
   background: rgba(255, 210, 74, 0.16);
@@ -988,166 +992,28 @@ body::before {
 .hero-copy strong {
   display: block;
   font-size: 20px;
-  line-height: 1.22;
+  line-height: 1.25;
   color: #ffffff;
   font-weight: 900;
   letter-spacing: 1px;
 }
 
 .hero-copy p {
-  margin: 8px 0 0;
-  color: rgba(255,255,255,.9);
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.90);
   font-weight: 700;
   font-size: 15px;
 }
 
-.hero-visual {
-  justify-self: end;
-  width: 100%;
-  max-width: 320px;
-  padding: 14px 14px 12px;
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 22px rgba(0,0,0,0.10);
-  backdrop-filter: blur(3px);
-  position: relative;
-}
-
-.hero-visual::before {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border-radius: 18px;
-  background: radial-gradient(circle at 50% 18%, rgba(255,255,255,0.08), transparent 100px);
-  pointer-events: none;
-}
-
-.event-stack-display,
-.hero-badges {
-  position: relative;
-  z-index: 1;
-}
-
-.event-stack-display {
-  min-height: 172px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-}
-
-.event-stack-layout {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-}
-
-.stack-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  min-width: 52px;
-}
-
-.stack-cups {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 3px;
-  min-height: 120px;
-  justify-content: flex-start;
-}
-
-.mini-cup {
-  display: block;
-  width: 26px;
-  height: 18px;
-  border-radius: 6px 6px 9px 9px;
-  position: relative;
-  box-shadow: inset 0 4px 0 rgba(255,255,255,.30), inset 0 -3px 0 rgba(0,0,0,.10), 0 5px 8px rgba(0,0,0,.16);
-}
-
-.mini-cup::before {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 4px;
-  right: 4px;
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.42);
-}
-
-.mini-cup.blue { background: linear-gradient(180deg, #5bbdff, #0b6fb3); }
-.mini-cup.teal { background: linear-gradient(180deg, #52e0d0, #00a39d); }
-.mini-cup.orange { background: linear-gradient(180deg, #ff8d7d, #dc4b34); }
-.mini-cup.gold { background: linear-gradient(180deg, #fff28e, #f2b534); }
-
-.stack-count {
-  font-size: 12px;
-  font-weight: 900;
-  color: rgba(255,255,255,.9);
-  letter-spacing: 1px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.14);
-}
-
-.stack-pattern-label {
-  margin-top: 2px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,.75);
-}
-
-.hero-badges {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.hero-badge {
-  min-width: 72px;
-  text-align: center;
-  padding: 9px 12px;
-  border: 1.5px solid rgba(255,255,255,.30);
-  border-radius: 16px;
-  background: rgba(255,255,255,.10);
-  color: #fff;
-  font-weight: 900;
-  letter-spacing: 0.8px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 6px 14px rgba(0,0,0,.08);
-  cursor: pointer;
-  transition: transform .18s ease, background .18s ease, border-color .18s ease;
-}
-
-.hero-badge:hover {
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.14);
-}
-
-.hero-badge.is-active {
-  background: rgba(255, 215, 94, 0.18);
-  border-color: rgba(255, 231, 140, 0.65);
-  color: #fff8d2;
-}
-
 @media (max-width: 920px) {
   body::before {
-    background-size: min(48vw, 270px);
-    opacity: 0.035;
+    background-size: min(82vw, 500px);
+    background-position: center 58%;
+    opacity: 0.07;
   }
 
   .hero-header {
-    padding: 16px 18px 16px;
+    padding: 16px 18px 18px;
     border-radius: 24px;
   }
 
@@ -1161,27 +1027,13 @@ body::before {
   .hero-topbar {
     flex-direction: column;
     align-items: stretch;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .brand-text h1 { font-size: 26px; }
   .brand-text p { font-size: 14px; }
-
-  .hero-main {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .hero-copy {
-    max-width: none;
-    text-align: center;
-  }
-
-  .hero-visual {
-    max-width: 360px;
-    justify-self: center;
-  }
-
+  .hero-main.solo-hero { min-height: 128px; }
+  .hero-copy { max-width: none; padding: 24px 0 8px; }
   .top-actions { justify-content: flex-end; }
 }
 
@@ -1189,9 +1041,5 @@ body::before {
   .hero-header::after { display: none; }
   .hero-kicker { font-size: 11px; letter-spacing: 1.2px; }
   .hero-copy strong { font-size: 18px; }
-  .hero-badge { min-width: 68px; padding: 8px 10px; }
-  .event-stack-display { min-height: 156px; }
-  .mini-cup { width: 22px; height: 16px; }
-  .stack-group { min-width: 46px; }
-  .stack-cups { min-height: 108px; }
+  .hero-copy { text-align: center; }
 }
