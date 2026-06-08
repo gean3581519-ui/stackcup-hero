@@ -7,8 +7,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>桃園疊杯英雄榜成績系統｜正式版</title>
-  <link rel="icon" type="image/png" href="taoyuan-stackcup-logo.png?v=20260608-6">
-  <link rel="stylesheet" href="styles.css?v=20260608-6">
+  <link rel="icon" type="image/png" href="taoyuan-stackcup-logo.png?v=20260608-7">
+  <link rel="stylesheet" href="styles.css?v=20260608-7">
 </head>
 <body>
   <main class="app-shell">
@@ -35,16 +35,12 @@
         </div>
 
         <div class="hero-visual" aria-hidden="true">
-          <div class="mega-cup-stack">
-            <div class="cup-row cup-row-1"><span class="cup cup-gold"></span></div>
-            <div class="cup-row cup-row-2"><span class="cup cup-blue"></span><span class="cup cup-orange"></span></div>
-            <div class="cup-row cup-row-3"><span class="cup cup-teal"></span><span class="cup cup-blue"></span><span class="cup cup-gold"></span></div>
-          </div>
+          <div id="heroStackDisplay" class="event-stack-display" data-item="333"></div>
 
           <div class="hero-badges">
-            <span>333</span>
-            <span>363</span>
-            <span>CYCLE</span>
+            <button type="button" class="hero-badge is-active" data-item="333">333</button>
+            <button type="button" class="hero-badge" data-item="363">363</button>
+            <button type="button" class="hero-badge" data-item="Cycle">CYCLE</button>
           </div>
         </div>
       </div>
@@ -206,8 +202,8 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260608-6"></script>
-  <script src="students.js?v=20260608-6"></script>
-  <script src="app.js?v=20260608-6"></script>
+  <script src="config.js?v=20260608-7"></script>
+  <script src="students.js?v=20260608-7"></script>
+  <script src="app.js?v=20260608-7"></script>
 </body>
 </html>

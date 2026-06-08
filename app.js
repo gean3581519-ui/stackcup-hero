@@ -39,6 +39,15 @@ function init() {
   $("exportGroup").value = "個人";
   $("exportItem").value = "全部";
   $("groupName").addEventListener("change", updateName2);
+  $("itemName").addEventListener("change", () => renderHeroStack($("itemName").value));
+  document.querySelectorAll(".hero-badge").forEach((button) => {
+    button.addEventListener("click", () => {
+      const item = button.dataset.item;
+      $("itemName").value = item;
+      renderHeroStack(item);
+      updateOverwriteHint();
+    });
+  });
 
   $("playerNo").addEventListener("change", fillNameByNo);
   $("playerNo").addEventListener("input", () => {
@@ -63,6 +72,7 @@ function init() {
   });
 
   updateName2();
+  renderHeroStack($("itemName").value);
   setupSupabase();
 }
 
@@ -612,6 +622,47 @@ function fillNoByName() {
   $("playerNo").value = student.playerNo;
   if (isSpecialStudent(student.playerNo, student.name, student.special)) $("remark").value = "特";
   updateOverwriteHint();
+}
+
+function heroStackPattern(item) {
+  if (item === "363") return [3, 6, 3];
+  if (item === "Cycle") return [1, 10, 1];
+  return [3, 3, 3];
+}
+
+function renderHeroStack(item = $("itemName")?.value || "333") {
+  const container = $("heroStackDisplay");
+  if (!container) return;
+
+  const pattern = heroStackPattern(item);
+  const colors = ["gold", "blue", "teal", "orange"];
+  const patternText = pattern.join("-");
+
+  const groupsHtml = pattern.map((count, groupIndex) => {
+    const cupsHtml = Array.from({ length: count }, (_, cupIndex) => {
+      const color = colors[(groupIndex + cupIndex) % colors.length];
+      return `<span class="mini-cup ${color}"></span>`;
+    }).join("");
+
+    return `
+      <div class="stack-group">
+        <div class="stack-cups">${cupsHtml}</div>
+        <div class="stack-count">${count}</div>
+      </div>
+    `;
+  }).join("");
+
+  container.dataset.item = item;
+  container.innerHTML = `
+    <div>
+      <div class="event-stack-layout">${groupsHtml}</div>
+      <div class="stack-pattern-label">${patternText}</div>
+    </div>
+  `;
+
+  document.querySelectorAll('.hero-badge').forEach((button) => {
+    button.classList.toggle('is-active', button.dataset.item === item);
+  });
 }
 
 function updateName2() {
