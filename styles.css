@@ -838,307 +838,302 @@ table thead th {
 
 
 /* =========================================================
-   桃園疊杯中心官方風格覆蓋版 20260608-3
-   以使用者提供原始檔案為基礎，只覆蓋外觀
+   桃園疊杯英雄榜 合併頁首 + 標誌浮水印版 20260608-4
 ========================================================= */
 
-:root {
-  --tssc-navy: #062b57;
-  --tssc-blue: #075ec8;
-  --tssc-blue-2: #0b7cff;
-  --tssc-gold: #ffd33d;
-  --tssc-gold-2: #f3a91b;
-  --tssc-red: #df1f2d;
-  --tssc-white: #ffffff;
-  --tssc-ink: #10233f;
-  --tssc-soft-blue: #eef6ff;
-  --tssc-line: rgba(6, 43, 87, 0.14);
-  --bg: #eef5ff;
-  --panel: #ffffff;
-  --ink: var(--tssc-ink);
-  --muted: #5d6f89;
-  --brand: var(--tssc-blue);
-  --brand-dark: var(--tssc-navy);
-  --accent: var(--tssc-gold-2);
-  --danger: var(--tssc-red);
-  --soft: #eef8ff;
-  --warn-soft: #fff7df;
-  --line: #d6e2f2;
+.app-shell {
+  position: relative;
+  z-index: 1;
 }
 
-body {
-  background:
-    radial-gradient(circle at 8% 8%, rgba(255, 211, 61, 0.22), transparent 280px),
-    radial-gradient(circle at 88% 12%, rgba(7, 94, 200, 0.18), transparent 320px),
-    linear-gradient(180deg, #f7fbff 0%, #eaf3ff 45%, #fff8e6 100%);
-  color: var(--tssc-ink);
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('taoyuan-stackcup-logo.png');
+  background-repeat: no-repeat;
+  background-position: center 56%;
+  background-size: min(44vw, 520px);
+  opacity: 0.045;
+  filter: drop-shadow(0 0 20px rgba(0,0,0,0.03));
 }
 
-/* 頁首：官方白底品牌卡片 */
-.topbar {
-  padding: 24px 26px;
-  border-radius: 26px;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,0.98), rgba(255,255,255,0.92)),
-    radial-gradient(circle at 0% 0%, rgba(255, 211, 61, 0.28), transparent 220px);
-  border: 1px solid rgba(6, 43, 87, 0.12);
-  box-shadow: 0 18px 45px rgba(6, 43, 87, 0.14);
-}
-
-.brand-block {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  min-width: 0;
-}
-
-.brand-logo {
-  width: 86px;
-  height: 86px;
-  object-fit: contain;
-  flex: 0 0 auto;
-  padding: 4px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(255, 211, 61, 0.20), rgba(7, 94, 200, 0.08));
-  filter: drop-shadow(0 8px 16px rgba(6, 43, 87, 0.22));
-}
-
-.brand-text {
-  min-width: 0;
-}
-
-.topbar h1 {
-  color: var(--tssc-navy);
-  font-size: clamp(28px, 3.2vw, 44px);
-  font-weight: 950;
-  letter-spacing: 1px;
-  line-height: 1.12;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-}
-
-.topbar p {
-  margin-top: 10px;
-  color: #61738d;
-  font-size: 16px;
-  font-weight: 800;
-}
-
-/* 移除原本標題小杯 icon，改用正式 logo */
-.title-cup-icon {
-  display: none;
-}
-
-/* 按鈕：金色主動作，藍色次動作 */
-.top-actions button,
-#loginBtn,
-button[type="submit"] {
-  background: linear-gradient(135deg, var(--tssc-gold), var(--tssc-gold-2));
-  color: var(--tssc-navy);
-  border: 1px solid rgba(6, 43, 87, 0.12);
-  box-shadow: 0 10px 22px rgba(243, 169, 27, 0.28);
-}
-
-.top-actions button:hover,
-#loginBtn:hover,
-button[type="submit"]:hover {
-  background: linear-gradient(135deg, #ffe26c, #f5a21a);
-  color: var(--tssc-navy);
-}
-
-button[type="button"]:not(#loginBtn):not(#syncBtn):not(#logoutBtn) {
-  background: linear-gradient(135deg, var(--tssc-blue-2), var(--tssc-blue));
-  color: #fff;
-  box-shadow: 0 10px 22px rgba(7, 94, 200, 0.18);
-}
-
-button[type="button"]:not(#loginBtn):not(#syncBtn):not(#logoutBtn):hover {
-  background: linear-gradient(135deg, #2290ff, #075ec8);
-}
-
-/* 主視覺 Banner：深藍 + 金色 + 桃園疊杯文字 */
-.cup-hero-banner {
+.hero-header {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 18px;
+  padding: 28px 28px 24px;
   border-radius: 30px;
-  border: 1px solid rgba(255, 211, 61, 0.38);
+  border: 1px solid rgba(255, 211, 61, 0.22);
   background:
-    radial-gradient(circle at 80% 20%, rgba(255, 211, 61, 0.18), transparent 240px),
-    linear-gradient(135deg, #062b57 0%, #075ec8 52%, #0b7cff 100%);
-  box-shadow: 0 24px 55px rgba(6, 43, 87, 0.30);
+    radial-gradient(circle at 78% 22%, rgba(255, 211, 61, 0.20), transparent 220px),
+    linear-gradient(135deg, #082d5d 0%, #0b52a6 54%, #2f7cff 100%);
+  color: #fff;
+  box-shadow: 0 24px 55px rgba(7, 78, 128, 0.28);
 }
 
-.cup-hero-banner::before {
+.hero-header::before {
+  content: "";
+  position: absolute;
+  inset: -30px auto auto 52%;
+  width: 420px;
+  height: 420px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background-image: url('taoyuan-stackcup-logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.07;
+  filter: saturate(1.05);
+}
+
+.hero-header::after {
   content: "TAOYUAN SPEED STACKS";
   position: absolute;
-  right: -12px;
-  top: 10px;
-  font-size: clamp(42px, 6vw, 76px);
+  right: 18px;
+  top: 22px;
+  font-size: clamp(42px, 5.8vw, 86px);
   font-weight: 950;
   font-style: italic;
-  letter-spacing: 5px;
-  color: rgba(255,255,255,0.075);
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.08);
   white-space: nowrap;
   line-height: 1;
 }
 
+.hero-topbar,
+.hero-main {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.brand-block {
+  min-width: 0;
+}
+
+.brand-text h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(30px, 3.6vw, 52px);
+  font-weight: 950;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.18);
+}
+
+.brand-text p {
+  margin: 10px 0 0;
+  color: rgba(255,255,255,0.88);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.topbar,
+.title-cup-icon {
+  display: none !important;
+}
+
+.top-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.top-actions button {
+  background: linear-gradient(135deg, #ffd75b, #e6a72a);
+  color: #062b57;
+  border: 1px solid rgba(6, 43, 87, 0.12);
+  box-shadow: 0 10px 22px rgba(243, 169, 27, 0.25);
+}
+
+.top-actions button:hover {
+  background: linear-gradient(135deg, #ffe47f, #f1b53e);
+}
+
+.hero-main {
+  display: grid;
+  grid-template-columns: 1.1fr auto 0.9fr;
+  align-items: center;
+  gap: 24px;
+}
+
 .hero-kicker {
-  background: rgba(255, 211, 61, 0.20);
-  border: 1px solid rgba(255, 211, 61, 0.35);
-  color: #fff0a6;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 210, 74, 0.22);
+  color: #fff1a6;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+  border: 1px solid rgba(255, 210, 74, 0.28);
 }
 
 .hero-copy strong {
+  display: block;
+  font-size: clamp(26px, 3vw, 44px);
+  line-height: 1.1;
   color: #ffffff;
-  text-shadow: 0 3px 12px rgba(0,0,0,0.20);
+}
+
+.hero-copy p {
+  margin: 8px 0 0;
+  color: rgba(255,255,255,.9);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.mega-cup-stack {
+  display: grid;
+  gap: 7px;
+  justify-items: center;
+  position: relative;
+  transform: translateY(2px);
+}
+
+.cup-row {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+}
+
+.cup {
+  display: inline-block;
+  width: 42px;
+  height: 54px;
+  border-radius: 8px 8px 18px 18px;
+  box-shadow: inset 0 8px 0 rgba(255,255,255,.4), inset 0 -8px 0 rgba(0,0,0,.12), 0 10px 18px rgba(0,0,0,.22);
+  position: relative;
+}
+
+.cup::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  right: 8px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.5);
+}
+
+.cup-blue { background: linear-gradient(180deg, #52b2ff, #0b6fb3); }
+.cup-teal { background: linear-gradient(180deg, #35ddd9, #00837f); }
+.cup-orange { background: linear-gradient(180deg, #ff7d72, #df3e28); }
+.cup-gold { background: linear-gradient(180deg, #fff27a, #f5a623); }
+
+.hero-badges {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .hero-badges span {
-  min-width: 92px;
-  border: 1.5px solid rgba(255,255,255,.48);
+  min-width: 96px;
+  text-align: center;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(255,255,255,.45);
+  border-radius: 18px;
   background: rgba(255,255,255,.12);
-  backdrop-filter: blur(5px);
   color: #fff;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.38),
-    0 8px 20px rgba(0,0,0,.12);
+  font-weight: 900;
   letter-spacing: 0.8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.32);
+  backdrop-filter: blur(4px);
 }
 
-.cup-blue { background: linear-gradient(180deg, #59b4ff, #075ec8); }
-.cup-teal { background: linear-gradient(180deg, #42d9ff, #075ec8); }
-.cup-orange { background: linear-gradient(180deg, #ff5b5b, #df1f2d); }
-.cup-gold { background: linear-gradient(180deg, #ffea75, #f3a91b); }
-
-/* 登入頁官方風格 */
-.login-panel {
-  border-radius: 26px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94)),
-    radial-gradient(circle at 95% 5%, rgba(255, 211, 61, 0.20), transparent 180px);
-  border: 1px solid rgba(6, 43, 87, 0.14);
-  box-shadow: 0 18px 45px rgba(6, 43, 87, 0.12);
-}
-
-.login-panel h2 {
-  color: var(--tssc-navy);
-  font-size: 24px;
-  font-weight: 950;
-}
-
-/* 面板與表格 */
-.panel {
-  border-radius: 22px;
-  border: 1px solid var(--tssc-line);
-  box-shadow: 0 16px 38px rgba(6, 43, 87, 0.10);
-}
-
-.panel h2 {
-  color: var(--tssc-navy);
-  font-weight: 950;
-}
-
-input,
-select {
-  border-color: #cbd9ec;
-  background: #ffffff;
-}
-
-input:focus,
-select:focus {
-  outline: 3px solid rgba(255, 211, 61, 0.28);
-  border-color: var(--tssc-blue);
-}
-
-th {
-  background: linear-gradient(180deg, var(--tssc-navy), #0a3d79);
-  color: #ffffff;
-}
-
-.item-divider td {
-  background: linear-gradient(90deg, var(--tssc-navy), var(--tssc-blue));
-  color: var(--tssc-gold);
-  letter-spacing: 1px;
-}
-
-.stat-cell {
-  background: linear-gradient(180deg, #ffffff, #f3f8ff);
-  border-color: rgba(6, 43, 87, 0.14);
-}
-
-.stat-cell strong {
-  color: var(--tssc-navy);
-}
-
-.overwrite-hint {
-  border-color: rgba(7, 94, 200, 0.18);
-  background: #eef6ff;
-  color: var(--tssc-blue);
-}
-
-.overwrite-hint.warning {
-  border-color: rgba(243, 169, 27, 0.42);
-  background: #fff7df;
-  color: #9a5d00;
-}
-
-.item-report h3 {
-  background: linear-gradient(90deg, var(--tssc-navy), var(--tssc-blue));
-  color: var(--tssc-gold);
-  letter-spacing: 1px;
-}
-
-.formal {
-  background: #ecf8ff;
-  color: var(--tssc-blue);
-}
-
-.excluded {
-  background: #fff2d0;
-  color: #a64b00;
-}
-
-.suggestions {
-  border-color: #b9c9df;
-  box-shadow: 0 16px 30px rgba(6, 43, 87, 0.18);
-}
-
-.suggestions .suggestion-item:hover,
-.suggestions .suggestion-item:focus,
-.suggestions .suggestion-item[type="button"]:hover,
-.suggestions .suggestion-item[type="button"]:focus {
-  background: #eef6ff;
-  color: var(--tssc-blue);
-}
-
-/* 手機版 */
 @media (max-width: 920px) {
-  .topbar {
-    padding: 18px;
-    border-radius: 22px;
+  body::before {
+    background-size: min(68vw, 360px);
+    background-position: center 62%;
+    opacity: 0.035;
   }
 
-  .brand-block {
-    gap: 12px;
+  .hero-header {
+    padding: 20px 18px 18px;
+    border-radius: 24px;
   }
 
-  .brand-logo {
-    width: 62px;
-    height: 62px;
-    border-radius: 16px;
+  .hero-header::before {
+    width: 300px;
+    height: 300px;
+    inset: 60px auto auto 50%;
   }
 
-  .topbar h1 {
-    justify-content: flex-start;
-    font-size: 24px;
-    line-height: 1.2;
+  .hero-header::after {
+    font-size: 34px;
+    right: -8px;
+    top: 56px;
+    letter-spacing: 2px;
   }
 
-  .topbar p {
+  .hero-topbar {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 14px;
+  }
+
+  .brand-text h1 {
+    font-size: 26px;
+  }
+
+  .brand-text p {
     font-size: 14px;
   }
 
-  .cup-hero-banner::before {
-    font-size: 34px;
-    right: -8px;
-    top: 14px;
-    letter-spacing: 2.4px;
+  .hero-main {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .hero-badges {
+    justify-content: center;
+  }
+
+  .mega-cup-stack {
+    order: -1;
+  }
+
+  .cup {
+    width: 34px;
+    height: 44px;
+  }
+
+  .top-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 540px) {
+  .hero-header::after {
+    display: none;
+  }
+
+  .hero-kicker {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+  }
+
+  .hero-copy strong {
+    font-size: 24px;
+  }
+
+  .hero-badges span {
+    min-width: 78px;
+    padding: 10px 12px;
   }
 }

@@ -7,42 +7,48 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>桃園疊杯英雄榜成績系統｜正式版</title>
-  <link rel="icon" type="image/png" href="taoyuan-stackcup-logo.png?v=20260608-3">
-  <link rel="stylesheet" href="styles.css?v=20260608-3">
+  <link rel="icon" type="image/png" href="taoyuan-stackcup-logo.png?v=20260608-4">
+  <link rel="stylesheet" href="styles.css?v=20260608-4">
 </head>
 <body>
   <main class="app-shell">
-    <section class="topbar">
-      <div class="brand-block">
-        <img class="brand-logo" src="taoyuan-stackcup-logo.png" alt="桃園疊杯中心標誌">
-        <div class="brand-text">
-          <h1>桃園疊杯英雄榜成績系統</h1>
-          <p id="sessionText">尚未登入</p>
+
+    <section class="hero-header" aria-label="桃園疊杯英雄榜主視覺">
+      <div class="hero-topbar">
+        <div class="brand-block">
+          <div class="brand-text">
+            <h1>桃園疊杯英雄榜成績系統</h1>
+            <p id="sessionText">尚未登入</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button id="syncBtn" class="hidden" type="button">重新整理</button>
+          <button id="logoutBtn" class="hidden" type="button">登出</button>
         </div>
       </div>
-      <div class="top-actions">
-        <button id="syncBtn" class="hidden" type="button">重新整理</button>
-        <button id="logoutBtn" class="hidden" type="button">登出</button>
+
+      <div class="hero-main">
+        <div class="hero-copy">
+          <span class="hero-kicker">TAOYUAN STACK CUP HERO</span>
+          <strong>速度、穩定、專注</strong>
+          <p>登錄成績・即時排名・月報表匯出</p>
+        </div>
+
+        <div class="mega-cup-stack" aria-hidden="true">
+          <div class="cup-row cup-row-1"><span class="cup cup-gold"></span></div>
+          <div class="cup-row cup-row-2"><span class="cup cup-blue"></span><span class="cup cup-orange"></span></div>
+          <div class="cup-row cup-row-3"><span class="cup cup-teal"></span><span class="cup cup-blue"></span><span class="cup cup-gold"></span></div>
+        </div>
+
+        <div class="hero-badges" aria-hidden="true">
+          <span>333</span>
+          <span>363</span>
+          <span>CYCLE</span>
+        </div>
       </div>
     </section>
 
-    <section class="cup-hero-banner" aria-label="疊杯主題裝飾">
-      <div class="hero-copy">
-        <span class="hero-kicker">STACK CUP HERO</span>
-        <strong>速度、穩定、專注</strong>
-        <p>登錄成績・即時排名・月報表匯出</p>
-      </div>
-      <div class="mega-cup-stack" aria-hidden="true">
-        <div class="cup-row cup-row-1"><span class="cup cup-gold"></span></div>
-        <div class="cup-row cup-row-2"><span class="cup cup-blue"></span><span class="cup cup-orange"></span></div>
-        <div class="cup-row cup-row-3"><span class="cup cup-teal"></span><span class="cup cup-blue"></span><span class="cup cup-gold"></span></div>
-      </div>
-      <div class="hero-badges" aria-hidden="true">
-        <span>333</span>
-        <span>363</span>
-        <span>CYCLE</span>
-      </div>
-    </section>
+
 
     <section id="setupPanel" class="panel login-panel hidden">
       <h2><span class="section-icon">⚙️</span>正式版尚未連線</h2>
@@ -198,8 +204,8 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260608-3"></script>
-  <script src="students.js?v=20260608-3"></script>
-  <script src="app.js?v=20260608-3"></script>
+  <script src="config.js?v=20260608-4"></script>
+  <script src="students.js?v=20260608-4"></script>
+  <script src="app.js?v=20260608-4"></script>
 </body>
 </html>
