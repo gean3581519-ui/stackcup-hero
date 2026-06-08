@@ -13,20 +13,16 @@ let students = window.HERO_STUDENTS || [];
 function init() {
   fillYears($("scoreYear"));
   fillYears($("reportYear"));
-  fillYears($("exportYear"));
   fillMonths($("scoreMonth"));
   fillMonths($("reportMonth"));
-  fillMonths($("exportMonth"));
 
   const lastPeriod = getLastEntryPeriod();
   const defaultYear = lastPeriod?.scoreYear || currentRocYear();
   const defaultMonth = lastPeriod?.scoreMonth || currentMonthText();
   $("scoreYear").value = String(defaultYear);
   $("reportYear").value = String(defaultYear);
-  $("exportYear").value = String(defaultYear);
   $("scoreMonth").value = defaultMonth;
   $("reportMonth").value = defaultMonth;
-  $("exportMonth").value = defaultMonth;
   $("coachDisplayName").value = localStorage.getItem(COACH_NAME_KEY) || "";
 
   $("loginBtn").addEventListener("click", login);
@@ -36,8 +32,6 @@ function init() {
   $("clearFormBtn").addEventListener("click", clearForm);
   $("reportBtn").addEventListener("click", renderReport);
   $("exportBtn").addEventListener("click", exportCsv);
-  $("exportGroup").value = "個人";
-  $("exportItem").value = "全部";
   $("groupName").addEventListener("change", updateName2);
 
   $("playerNo").addEventListener("change", fillNameByNo);
@@ -626,36 +620,17 @@ function clearForm() {
 }
 
 function exportCsv() {
-  const year = Number($("exportYear").value);
-  const month = $("exportMonth").value;
-  const group = normalizeGroup($("exportGroup").value);
-  const item = $("exportItem").value;
-
-  const filteredRecords = allRecords
-    .filter((r) => Number(r.scoreYear) === year)
-    .filter((r) => monthNumber(r.scoreMonth) === monthNumber(month))
-    .filter((r) => r.groupName === group)
-    .filter((r) => item === "全部" || r.itemName === item)
-    .sort((a, b) => items.indexOf(a.itemName) - items.indexOf(b.itemName)
-      || String(a.playerNo).localeCompare(String(b.playerNo), "zh-Hant", { numeric: true }));
-
-  if (!filteredRecords.length) {
-    alert("目前選擇的年份、月份、組別與項目沒有資料可匯出。");
-    return;
-  }
-
   const header = ["選手編號", "年度", "月份", "組別", "項目", "姓名1", "成績狀態", "有效秒數", "名次", "積分", "備註", "登錄時間"];
-  const csv = [header, ...filteredRecords.map((r) => [
+  const csv = [header, ...allRecords.map((r) => [
     r.playerNo, r.scoreYear, r.scoreMonth, r.groupName, r.itemName, r.name1,
     r.scoreText, r.effectiveSeconds, r.rank, r.points, r.remark, r.savedAt
   ])].map((row) => row.map(csvCell).join(",")).join("\n");
 
-  const itemText = item === "全部" ? "全部項目" : item;
   const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `疊杯英雄榜成績_${year}年${month}_${group}_${itemText}.csv`;
+  link.download = `疊杯英雄榜成績_${new Date().toISOString().slice(0, 10)}.csv`;
   link.click();
   URL.revokeObjectURL(url);
 }
