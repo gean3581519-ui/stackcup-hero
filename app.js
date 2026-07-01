@@ -352,8 +352,31 @@ function isAbsentRemark(remark) {
   return absentRemarks.includes(String(remark).trim());
 }
 
+function hasValidScore(record) {
+  const n = Number(record.effectiveSeconds);
+  return record.effectiveSeconds !== "" && Number.isFinite(n) && n > 0 && n !== 999;
+}
+
+function isSpecialRecord(record) {
+  return isSpecialStudent(record.playerNo, record.name1, record.remark);
+}
+
+function categoryKey(record) {
+  return isSpecialRecord(record) ? "special" : "general";
+}
+
 function isRankable(record) {
-  return !isAbsentRemark(record.remark) && record.effectiveSeconds !== "" && Number(record.effectiveSeconds) !== 999;
+  return hasValidScore(record);
+}
+
+function sortByRankThenNo(a, b) {
+  return Number(a.rank) - Number(b.rank)
+    || Number(a.effectiveSeconds) - Number(b.effectiveSeconds)
+    || String(a.playerNo).localeCompare(String(b.playerNo), "zh-Hant", { numeric: true });
+}
+
+function sortByNo(a, b) {
+  return String(a.playerNo).localeCompare(String(b.playerNo), "zh-Hant", { numeric: true });
 }
 
 function pointsByRank(rank) {
@@ -479,32 +502,52 @@ async function saveScore(event) {
 
 function recalc(records) {
   const groups = new Map();
+
   records.forEach((record) => {
     record.rank = "";
     record.points = "";
-    if (isAbsentRemark(record.remark)) {
-      record.rank = record.remark;
-      record.points = 0;
-      return;
+
+    // 舊資料若曾經填假/國/退，後來補上有效成績，顯示時自動視為正式成績
+    if (hasValidScore(record) && isAbsentRemark(record.remark)) {
+      record.remark = "";
     }
+
     if (Number(record.effectiveSeconds) === 999) {
       record.rank = "犯規";
       record.points = 0;
       return;
     }
-    if (!isRankable(record)) return;
-    const eventKey = [record.scoreYear, monthNumber(record.scoreMonth), record.groupName, record.itemName].join("|");
+
+    if (!hasValidScore(record)) {
+      if (isAbsentRemark(record.remark)) {
+        record.rank = record.remark;
+        record.points = 0;
+      }
+      return;
+    }
+
+    // 重點：排名依「年度、月份、組別、項目、一般/特生」分開
+    const eventKey = [
+      record.scoreYear,
+      monthNumber(record.scoreMonth),
+      record.groupName,
+      record.itemName,
+      categoryKey(record)
+    ].join("|");
+
     if (!groups.has(eventKey)) groups.set(eventKey, []);
     groups.get(eventKey).push(record);
   });
 
   groups.forEach((rows) => {
     rows.forEach((row) => {
+      // 競賽排名法：同成績同名次，下一名跳號
       const better = rows.filter((candidate) => Number(candidate.effectiveSeconds) < Number(row.effectiveSeconds)).length;
       row.rank = better + 1;
       row.points = pointsByRank(row.rank);
     });
   });
+
   return records;
 }
 
@@ -513,42 +556,64 @@ function renderRecords() {
   const month = $("scoreMonth").value;
   const group = normalizeGroup($("groupName").value);
   const records = allRecords
-    .filter((r) => Number(r.scoreYear) === year && monthNumber(r.scoreMonth) === monthNumber(month) && r.groupName === group)
-    .sort((a, b) => items.indexOf(a.itemName) - items.indexOf(b.itemName)
-      || String(a.playerNo).localeCompare(String(b.playerNo), "zh-Hant", { numeric: true }));
+    .filter((r) => Number(r.scoreYear) === year && monthNumber(r.scoreMonth) === monthNumber(month) && r.groupName === group);
 
   renderMonthlyStats(records, year, month, group);
+
   $("recordsBody").innerHTML = items.map((item) => {
     const itemRows = records.filter((record) => record.itemName === item);
+
+    const generalFormal = itemRows.filter((r) => !isSpecialRecord(r) && isRankable(r)).sort(sortByRankThenNo);
+    const specialFormal = itemRows.filter((r) => isSpecialRecord(r) && isRankable(r)).sort(sortByRankThenNo);
+    const generalExcluded = itemRows.filter((r) => !isSpecialRecord(r) && !isRankable(r)).sort(sortByNo);
+    const specialExcluded = itemRows.filter((r) => isSpecialRecord(r) && !isRankable(r)).sort(sortByNo);
+
     return `
       <tr class="item-divider">
         <td colspan="11">${escapeHtml(item)}</td>
       </tr>
-      ${itemRows.length ? itemRows.map((record) => `
-        <tr>
-          <td>${escapeHtml(record.scoreYear)}</td>
-          <td>${escapeHtml(record.scoreMonth)}</td>
-          <td>${escapeHtml(record.groupName)}</td>
-          <td>${escapeHtml(record.itemName)}</td>
-          <td>${escapeHtml(record.playerNo)}</td>
-          <td>${escapeHtml(record.name1)}${record.name2 ? " / " + escapeHtml(record.name2) : ""}</td>
-          <td>${escapeHtml(record.scoreText)}</td>
-          <td>${escapeHtml(record.rank)}</td>
-          <td>${escapeHtml(record.points)}</td>
-          <td>${escapeHtml(record.remark)}</td>
-          <td>${escapeHtml(record.coachName)}</td>
-        </tr>
-      `).join("") : `
-        <tr>
-          <td colspan="11" class="empty">尚無資料</td>
-        </tr>
-      `}
+      ${recordsSectionRows(`${item}｜一般生｜正式排名`, generalFormal)}
+      ${recordsSectionRows(`${item}｜特國／特市｜正式排名`, specialFormal, "special")}
+      ${recordsSectionRows(`${item}｜一般生｜未列入排名`, generalExcluded, "excluded")}
+      ${recordsSectionRows(`${item}｜特國／特市｜未列入排名`, specialExcluded, "special excluded")}
     `;
   }).join("");
 }
 
+function recordsSectionRows(title, rows, className = "") {
+  if (!rows.length) {
+    return `
+      <tr class="sub-divider ${className}">
+        <td colspan="11">${escapeHtml(title)}：沒有資料</td>
+      </tr>
+    `;
+  }
+
+  return `
+    <tr class="sub-divider ${className}">
+      <td colspan="11">${escapeHtml(title)}</td>
+    </tr>
+    ${rows.map((record) => `
+      <tr>
+        <td>${escapeHtml(record.scoreYear)}</td>
+        <td>${escapeHtml(record.scoreMonth)}</td>
+        <td>${escapeHtml(record.groupName)}</td>
+        <td>${escapeHtml(record.itemName)}</td>
+        <td>${escapeHtml(record.playerNo)}</td>
+        <td>${escapeHtml(record.name1)}${record.name2 ? " / " + escapeHtml(record.name2) : ""}</td>
+        <td>${escapeHtml(record.scoreText)}</td>
+        <td>${escapeHtml(isRankable(record) ? record.rank : excludedStatus(record))}</td>
+        <td>${escapeHtml(record.points || 0)}</td>
+        <td>${escapeHtml(record.remark)}</td>
+        <td>${escapeHtml(record.coachName)}</td>
+      </tr>
+    `).join("")}
+  `;
+}
+
 function renderMonthlyStats(records, year, month, group) {
   const scored = records.filter((record) => isRankable(record)).length;
+  const specialScored = records.filter((record) => isRankable(record) && isSpecialRecord(record)).length;
   const fouls = records.filter((record) => Number(record.effectiveSeconds) === 999).length;
   const excluded = records.filter((record) => !isRankable(record)).length;
   $("monthlyStats").innerHTML = `
@@ -557,6 +622,7 @@ function renderMonthlyStats(records, year, month, group) {
     <div class="stat-cell"><strong>${escapeHtml(group)}</strong><span>組別</span></div>
     <div class="stat-cell"><strong>${records.length}</strong><span>總筆數</span></div>
     <div class="stat-cell"><strong>${scored}</strong><span>正式成績</span></div>
+    <div class="stat-cell"><strong>${specialScored}</strong><span>特生正式成績</span></div>
     <div class="stat-cell"><strong>${fouls}</strong><span>犯規</span></div>
     <div class="stat-cell"><strong>${excluded}</strong><span>未列入排名</span></div>
     <div class="stat-cell"><strong>${new Date().toLocaleTimeString("zh-TW", { hour12: false })}</strong><span>更新時間</span></div>
@@ -570,13 +636,31 @@ function renderReport() {
 
   $("reportOutput").innerHTML = items.map((item) => {
     const eventRows = allRecords.filter((r) => eventMatches(r, year, month, group, item));
-    const formal = eventRows.filter(isRankable).sort((a, b) => Number(a.rank) - Number(b.rank));
-    const excluded = eventRows.filter((r) => !isRankable(r));
+
+    const generalFormal = eventRows.filter((r) => !isSpecialRecord(r) && isRankable(r)).sort(sortByRankThenNo);
+    const specialFormal = eventRows.filter((r) => isSpecialRecord(r) && isRankable(r)).sort(sortByRankThenNo);
+    const generalExcluded = eventRows.filter((r) => !isSpecialRecord(r) && !isRankable(r)).sort(sortByNo);
+    const specialExcluded = eventRows.filter((r) => isSpecialRecord(r) && !isRankable(r)).sort(sortByNo);
+
     return `
       <article class="item-report">
         <h3>${item}</h3>
-        ${reportSection("正式排名", formal, "formal")}
-        ${reportSection("未列入排名", excluded, "excluded", true)}
+        <div class="report-columns">
+          <div>
+            ${reportSection("一般生｜正式排名", generalFormal, "formal")}
+          </div>
+          <div>
+            ${reportSection("特國／特市｜正式排名", specialFormal, "formal special")}
+          </div>
+        </div>
+        <div class="report-columns">
+          <div>
+            ${reportSection("一般生｜未列入排名", generalExcluded, "excluded", true)}
+          </div>
+          <div>
+            ${reportSection("特國／特市｜未列入排名", specialExcluded, "excluded special", true)}
+          </div>
+        </div>
       </article>
     `;
   }).join("");

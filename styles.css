@@ -1071,3 +1071,43 @@ body::before {
   .hero-side-logo { justify-content: center; margin-top: 8px; }
   .hero-side-logo img { width: 130px; }
 }
+
+
+/* v20260701-3：即時成績與月報表，一般生/特生分開排名 */
+.sub-divider td {
+  background: linear-gradient(90deg, #edf7ff, #ffffff);
+  color: #0b4f86;
+  font-weight: 900;
+  letter-spacing: .5px;
+  border-top: 2px solid rgba(11,111,179,.22);
+}
+
+.sub-divider.special td {
+  background: linear-gradient(90deg, #f4eaff, #ffffff);
+  color: #7030a0;
+  border-top-color: rgba(112,48,160,.32);
+}
+
+.sub-divider.excluded td {
+  background: linear-gradient(90deg, #fff4de, #ffffff);
+  color: #b45309;
+}
+
+.report-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  padding: 0 14px 14px;
+}
+
+.section-title.special {
+  background: linear-gradient(90deg, #f4eaff, #ffffff);
+  color: #7030a0;
+  border-left: 8px solid #7030a0;
+}
+
+@media (max-width: 900px) {
+  .report-columns {
+    grid-template-columns: 1fr;
+  }
+}
